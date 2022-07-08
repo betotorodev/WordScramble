@@ -115,18 +115,12 @@ struct ContentView: View {
     startGame()
     usedWords = [String]()
     score = 0
+    newWord = ""
   }
   
   var body: some View {
     NavigationView {
       List {
-        Section {
-          HStack {
-            Text("Score")
-            Spacer()
-            Text(score, format: .number)
-          }
-        }
         Section {
           TextField("Enter your word", text: $newWord)
             .autocapitalization(.none)
@@ -151,6 +145,14 @@ struct ContentView: View {
       }
       .toolbar {
         Button("Start again", action: startAgain)
+      }
+      .safeAreaInset(edge: .bottom) {
+          Text("Score: \(score)")
+              .frame(maxWidth: .infinity)
+              .padding()
+              .background(.blue)
+              .foregroundColor(.white)
+              .font(.title)
       }
     }
   }
