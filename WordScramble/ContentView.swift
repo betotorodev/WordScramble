@@ -12,6 +12,7 @@ struct ContentView: View {
   @State private var usedWords = [String]()
   @State private var rootWord = ""
   @State private var newWord = ""
+  @State private var score = 0
   
   @State private var errorTitle = ""
   @State private var errorMessage = ""
@@ -66,6 +67,7 @@ struct ContentView: View {
     
     withAnimation {
       usedWords.insert(answer, at: 0)
+      calculatePoints()
     }
     newWord = ""
   }
@@ -96,6 +98,13 @@ struct ContentView: View {
     return misspelledRange.location == NSNotFound
   }
   
+  func calculatePoints() {
+    score += 1
+    if newWord.count > 3 {
+      score += 3
+    }
+  }
+  
   func wordError(title: String, message: String) {
     errorTitle = title
     errorMessage = message
@@ -105,6 +114,7 @@ struct ContentView: View {
   func startAgain() {
     startGame()
     usedWords = [String]()
+    score = 0
   }
   
   var body: some View {
@@ -114,7 +124,7 @@ struct ContentView: View {
           HStack {
             Text("Score")
             Spacer()
-            Text(0, format: .number)
+            Text(score, format: .number)
           }
         }
         Section {
