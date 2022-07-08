@@ -44,6 +44,11 @@ struct ContentView: View {
     // exit if the remaining string is empty
     guard answer.count > 0 else { return }
     
+    guard answer != rootWord else {
+      wordError(title: "jajajaja NO!", message: "You can't use the word itself")
+      return
+    }
+    
     guard isOriginal(word: answer) else {
         wordError(title: "Word used already", message: "Be more original")
         return
@@ -97,9 +102,21 @@ struct ContentView: View {
     showingError = true
   }
   
+  func startAgain() {
+    startGame()
+    usedWords = [String]()
+  }
+  
   var body: some View {
     NavigationView {
       List {
+        Section {
+          HStack {
+            Text("Score")
+            Spacer()
+            Text(0, format: .number)
+          }
+        }
         Section {
           TextField("Enter your word", text: $newWord)
             .autocapitalization(.none)
@@ -121,6 +138,9 @@ struct ContentView: View {
         Button("OK", role: .cancel) { }
       } message: {
         Text(errorMessage)
+      }
+      .toolbar {
+        Button("Start again", action: startAgain)
       }
     }
   }
